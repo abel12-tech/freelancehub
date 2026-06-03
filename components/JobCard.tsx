@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 type JobCardProps = {
+  id:number;
   title: string;
   budget: number;
   company: string;
@@ -10,7 +11,7 @@ type JobCardProps = {
   featured?: boolean;
 };
 
-export default function JobCard({ title, company, budget }: JobCardProps) {
+export default function JobCard({ id, title, company, budget }: JobCardProps) {
   const [applied, setApplied] = useState(false);
 
   function handleApply() {
@@ -28,6 +29,9 @@ export default function JobCard({ title, company, budget }: JobCardProps) {
         <div className="inline-flex items-center px-3 py-1 rounded-full bg-blue-300 text-gray-800 text-sm font-medium">
           {budget} ETB
         </div>
+        <a href={`/jobs/${title}_${id}`} className="text-blue-600 hover:underline text-sm">
+          View Details
+        </a>
         {applied ? (
           <button
             className="bg-green-600 text-white px-4 py-2 rounded-lg cursor-not-allowed"

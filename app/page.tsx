@@ -14,9 +14,9 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
+  // if (loading) {
+  //   return <Loading />;
+  // }
 
   const jobs = [
     {
@@ -64,6 +64,7 @@ export default function Home() {
             {featuredJobs.map((job) => (
               <JobCard
                 key={job.id}
+                id={job.id}
                 title={job.title}
                 company={job.company}
                 budget={job.budget}
@@ -78,6 +79,7 @@ export default function Home() {
             {jobs.map((job) => (
               <JobCard
                 key={job.id}
+                id={job.id}
                 title={job.title}
                 company={job.company}
                 budget={job.budget}
