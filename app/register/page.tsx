@@ -1,17 +1,12 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
 
-import { z } from "zod"
-
-import { registerSchema } from "@/lib/validation/auth.schema"
-
-type RegisterFormData = z.infer<
-  typeof registerSchema
->
+import { authClient } from "@/lib/auth-client"
+import { registerSchema ,type RegisterFormValues } from "@/lib/validation/auth"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -19,29 +14,36 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-      isSubmitting,
-    },
-  } = useForm<RegisterFormData>({
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
+      email: "",
+      password: "",
       role: "FREELANCER",
     },
   })
 
-  async function onSubmit(
-    data: RegisterFormData
-  ) {
+  async function onSubmit(data: RegisterFormValues) {
     try {
-      console.log(data)
+      const result = await authClient.signUp.email({
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        role: data.role,
+      })
 
-      // TODO:
-      // Send data to Better Auth API
+      console.log("Registration result:", result)
 
-      router.push("/login")
+      if (result.data) {
+        router.push("/login")
+      } else {
+        alert(result.error?.message ?? "Registration failed")
+      }
     } catch (error) {
-      console.error(error)
+      console.error("Registration error:", error)
+      alert("Something went wrong")
     }
   }
 
@@ -52,16 +54,10 @@ export default function RegisterPage() {
         className="w-full max-w-md space-y-5 bg-white p-8 rounded-2xl shadow"
       >
         <div>
-          <h1 className="text-4xl font-bold">
-            Create Account
-          </h1>
-
-          <p className="text-gray-500 mt-2">
-            Join FreelanceHub today
-          </p>
+          <h1 className="text-4xl font-bold">Create Account</h1>
+          <p className="text-gray-500 mt-2">Join FreelanceHub today</p>
         </div>
 
-        {/* Name */}
         <div>
           <input
             type="text"
@@ -69,15 +65,11 @@ export default function RegisterPage() {
             className="w-full border p-4 rounded-xl"
             {...register("name")}
           />
-
           {errors.name && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.name.message}
-            </p>
+            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
           )}
         </div>
 
-        {/* Email */}
         <div>
           <input
             type="email"
@@ -85,15 +77,11 @@ export default function RegisterPage() {
             className="w-full border p-4 rounded-xl"
             {...register("email")}
           />
-
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.email.message}
-            </p>
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
 
-        {/* Password */}
         <div>
           <input
             type="password"
@@ -101,7 +89,6 @@ export default function RegisterPage() {
             className="w-full border p-4 rounded-xl"
             {...register("password")}
           />
-
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">
               {errors.password.message}
@@ -109,38 +96,33 @@ export default function RegisterPage() {
           )}
         </div>
 
-        {/* Role */}
         <div>
           <select
             className="w-full border p-4 rounded-xl"
             {...register("role")}
           >
-            <option value="FREELANCER">
-              Freelancer
-            </option>
-
-            <option value="CLIENT">
-              Client
-            </option>
+            <option value="FREELANCER">Freelancer</option>
+            <option value="CLIENT">Client</option>
           </select>
-
           {errors.role && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.role.message}
-            </p>
+            <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>
           )}
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}
           className="w-full bg-blue-600 text-white p-4 rounded-xl disabled:opacity-50"
         >
-          {isSubmitting
-            ? "Creating Account..."
-            : "Register"}
+          {isSubmitting ? "Creating Account..." : "Register"}
         </button>
+
+        <p className="text-center text-gray-500 text-sm">
+          Already have an account?{" "}
+          <Link href="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   )

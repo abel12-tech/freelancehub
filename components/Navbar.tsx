@@ -1,9 +1,11 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
+"use client"
+
+import { authClient } from "@/lib/auth-client"
+import Link from "next/link"
 
 export default function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { data: session, isPending } = authClient.useSession()
+  const user = session?.user
 
   return (
     <nav className="bg-white border-b">
@@ -22,20 +24,36 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center space-x-6">
+            {user?.role === "CLIENT" && (
+              <Link href="/jobs/create" className="text-gray-700 hover:text-blue-600">
+                Post a Job
+              </Link>
+            )}
+
             <Link href="/jobs" className="text-gray-700 hover:text-blue-600">
               Jobs
             </Link>
           </div>
 
-          {loggedIn ? (
-            <div className="flex items-center space-x-4">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-                Dashboard
+          {isPending ? null : user ? (
+            <div className="flex items-center gap-3">
+              <span className="text-gray-800 font-medium">
+                {user.name}
+                <span className="text-xs text-gray-400 ml-2">
+                  ({user.role})
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={() => authClient.signOut()}
+                className="text-gray-600 hover:text-blue-600 text-sm"
+              >
+                Sign out
               </button>
             </div>
           ) : (
             <div className="flex items-center space-x-3">
-              <Link
+              <Link     
                 href="/login"
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
               >
@@ -52,5 +70,5 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
-  );
+  )
 }

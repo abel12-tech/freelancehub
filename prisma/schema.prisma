@@ -13,110 +13,91 @@ enum UserRole {
 }
 
 model User {
-  id              String        @id @default(cuid())
-  name            String
-  email           String        @unique
-  emailVerified   Boolean       @default(false)
-  image           String?
-  role            UserRole
-  bio             String?
+  id            String        @id
+  name          String
+  email         String        @unique
+  emailVerified Boolean       @default(false)
+  image         String?
+  role          UserRole
+  bio           String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  sessions        Session[]
-  accounts        Account[]
-
-  jobs            Job[]
-  applications    Application[]
+  sessions      Session[]
+  accounts      Account[]
+  jobs          Job[]
+  applications  Application[]
 
   @@map("user")
 }
 
 model Session {
-  id              String        @id @default(cuid())
-  expiresAt       DateTime
-  token           String        @unique
-
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  ipAddress       String?
-  userAgent       String?
-
-  userId          String
-  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("session")
 }
 
 model Account {
-  id                      String      @id @default(cuid())
-  accountId               String
-  providerId              String
-
-  userId                  String
-  user                    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  accessToken             String?
-  refreshToken            String?
-  idToken                 String?
-
-  accessTokenExpiresAt    DateTime?
-  refreshTokenExpiresAt   DateTime?
-
-  scope                   String?
-  password                String?
-
-  createdAt               DateTime    @default(now())
-  updatedAt               DateTime    @updatedAt
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   @@index([userId])
   @@map("account")
 }
 
 model Verification {
-  id              String      @id @default(cuid())
-  identifier      String
-  value           String
-  expiresAt       DateTime
-
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("verification")
 }
 
 model Job {
-  id              String          @id @default(cuid())
+  id           String        @id @default(cuid())
+  title        String
+  description  String
+  budget       Int
+  createdAt    DateTime      @default(now())
 
-  title           String
-  description     String
-  budget          Int
+  clientId     String
+  client       User          @relation(fields: [clientId], references: [id])
 
-  createdAt       DateTime        @default(now())
-
-  clientId        String
-  user            User            @relation(fields: [clientId], references: [id])
-
-  applications    Application[]
-
-  @@map("job")
+  applications Application[]
 }
 
 model Application {
-  id              String      @id @default(cuid())
+  id            String   @id @default(cuid())
+  freelancerId  String
+  freelancer    User     @relation(fields: [freelancerId], references: [id])
 
-  freelancerId    String
-  freelancer      User        @relation(fields: [freelancerId], references: [id])
+  jobId         String
+  job           Job      @relation(fields: [jobId], references: [id])
 
-  jobId           String
-  job             Job         @relation(fields: [jobId], references: [id])
-
-  coverLetter     String
-
-  createdAt       DateTime    @default(now())
-
-  @@map("application")
+  coverLetter   String
+  createdAt     DateTime @default(now())
 }
