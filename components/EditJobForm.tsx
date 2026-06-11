@@ -1,38 +1,57 @@
 "use client"
-import React from "react"
-import { useRouter } from "next/navigation"
-import JobForm from "./JobForm"
-import { type UpdateJobFormValues } from "@/lib/validation/job.schema"
 
-type Props = {
-  jobId: string
-  initialValues: Partial<UpdateJobFormValues>
+import { useRouter }
+  from "next/navigation"
+
+import JobForm,
+{
+  JobFormData
 }
+from "./JobForm"
 
-export default function EditJobForm({ jobId, initialValues }: Props) {
-  const router = useRouter()
+import { formatApiError } from "@/lib/format-api-error"
 
-  async function onSubmit(data: UpdateJobFormValues) {
-    try {
-      const res = await fetch(`/api/jobs/${jobId}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+export default function EditJobForm({
+  jobId,
+  job,
+}: {
+  jobId: string
+  job: JobFormData
+}) {
+  const router =
+    useRouter()
 
-      if (!res.ok) {
-        const json = await res.json().catch(() => ({}))
-        alert(json?.error ?? "Failed to update job")
-        return
-      }
+  async function updateJob(
+    data: JobFormData
+  ) {
+    const response =
+      await fetch(
+        `/api/jobs/${jobId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      )
 
-      router.push(`/jobs/${jobId}`)
-    } catch (err) {
-      console.error(err)
-      alert("Failed to update job")
+    if (!response.ok) {
+      const body = await response.json()
+      alert(formatApiError(body.error))
+      return
     }
+
+    router.push(`/jobs/${jobId}`)
   }
 
-  return <JobForm defaultValues={initialValues} onSubmit={onSubmit} submitLabel="Update Job" />
+  return (
+    <JobForm
+      defaultValues={job}
+      onSubmit={updateJob}
+      buttonText="Update Job"
+    />
+  )
 }

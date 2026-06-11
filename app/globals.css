@@ -3,6 +3,9 @@
 :root {
   --background: #f7fafc; /* subtle light gray for professional look */
   --foreground: #111827;
+  --accent: #0ea5e9; /* sky-500 */
+  --muted: #6b7280;
+  --card: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +26,58 @@ body {
 /* Small utility to keep main content readable on very large screens */
 main {
   max-width: 72rem;
+}
+
+/* Design utilities */
+.container {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.06);
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg,var(--accent),#2563eb);
+  color: white;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--foreground);
+}
+
+/* nicer inputs */
+.input {
+  border: 1px solid rgba(15,23,42,0.06);
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  background: white;
+}
+
+/* search input style */
+.search {
+  width: 20rem;
+}
+
+/* forms spacing */
+.form-section {
+  padding: 1.15rem;
+  border-radius: 0.75rem;
 }

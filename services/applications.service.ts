@@ -39,13 +39,9 @@ export async function getApplicationsByJobId(jobId: string) {
 }
 
 export async function hasApplied(jobId: string, freelancerId: string) {
-  const application = await prisma.application.findUnique({
-    where: {
-      freelancerId_jobId: {
-        freelancerId,
-        jobId,
-      },
-    },
+  const application = await prisma.application.findFirst({
+    where: { jobId, freelancerId },
+    select: { id: true },
   })
 
   return Boolean(application)
@@ -53,14 +49,9 @@ export async function hasApplied(jobId: string, freelancerId: string) {
 
 export async function getApplicationByFreelancerAndJob(
   jobId: string,
-  freelancerId: string,
+  freelancerId: string
 ) {
-  return prisma.application.findUnique({
-    where: {
-      freelancerId_jobId: {
-        freelancerId,
-        jobId,
-      },
-    },
+  return prisma.application.findFirst({
+    where: { jobId, freelancerId },
   })
 }
