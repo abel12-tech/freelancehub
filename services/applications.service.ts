@@ -55,3 +55,12 @@ export async function getApplicationByFreelancerAndJob(
     where: { jobId, freelancerId },
   })
 }
+
+export async function getAppliedJobIds(freelancerId: string) {
+  const applications = await prisma.application.findMany({
+    where: { freelancerId },
+    select: { jobId: true },
+  })
+
+  return applications.map((application) => application.jobId)
+}

@@ -45,29 +45,27 @@ export default function ApplyJobForm({ jobId }: ApplyJobFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-6">
-      <h2 className="text-2xl font-semibold">Apply for this job</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
+      <div className="card form-section">
+        <h2 className="text-2xl font-semibold">Apply for this job</h2>
 
-      <div>
-        <textarea
-          placeholder="Write your cover letter..."
-          className="w-full border p-4 rounded-xl h-40"
-          {...register("coverLetter")}
-        />
-        {errors.coverLetter && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.coverLetter.message}
-          </p>
-        )}
+        <div className="mt-4">
+          <textarea
+            placeholder="Write your cover letter..."
+            className="w-full input h-40"
+            {...register("coverLetter")}
+          />
+          {errors.coverLetter && (
+            <p className="text-red-500 text-sm mt-1">{errors.coverLetter.message}</p>
+          )}
+        </div>
+
+        <div className="mt-5 flex items-center justify-end">
+          <button type="submit" disabled={isSubmitting} className="btn btn-primary disabled:opacity-50">
+            {isSubmitting ? "Submitting..." : "Submit Application"}
+          </button>
+        </div>
       </div>
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="bg-green-600 text-white px-6 py-3 rounded-xl disabled:opacity-50"
-      >
-        {isSubmitting ? "Submitting..." : "Submit Application"}
-      </button>
     </form>
   )
 }

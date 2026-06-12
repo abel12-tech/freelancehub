@@ -10,12 +10,16 @@ export default function FreelancerCard({
   email,
 }: Props) {
   return (
-    <div className="border rounded-lg p-5 hover:shadow-md transition">
-      <h2 className="text-2xl font-semibold">{name}</h2>
+    <div className="card p-5 hover:shadow-lg transition">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-sky-200 flex items-center justify-center text-sky-800 font-bold">{name.charAt(0)}</div>
+        <div>
+          <h2 className="text-lg font-semibold">{name}</h2>
+          <p className="text-sm text-muted">@{username}</p>
+        </div>
+      </div>
 
-      <p className="text-gray-500 mt-1">@{username}</p>
-
-      <p className="mt-2 text-gray-700">{email}</p>
+      <p className="mt-3 text-gray-700">{email}</p>
     </div>
   );
 }
