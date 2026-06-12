@@ -31,49 +31,60 @@ export default function JobForm({
   })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <div>
-        <input
-          placeholder="Job Title"
-          className="w-full border p-4 rounded-xl"
-          {...register("title")}
-        />
-        {errors.title && (
-          <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
-        )}
+    <form onSubmit={handleSubmit(onSubmit)} className="card p-6 sm:p-8">
+      <div className="space-y-5">
+        <div>
+          <label htmlFor="title" className="form-label">Job title</label>
+          <input
+            id="title"
+            placeholder="e.g. Senior React Developer"
+            className="input"
+            {...register("title")}
+          />
+          {errors.title && (
+            <p className="input-error">{errors.title.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="description" className="form-label">Description</label>
+          <textarea
+            id="description"
+            placeholder="Describe the project, requirements, and deliverables"
+            className="input h-36 resize-y"
+            {...register("description")}
+          />
+          {errors.description && (
+            <p className="input-error">
+              {errors.description.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="budget" className="form-label">Budget (ETB)</label>
+          <input
+            id="budget"
+            type="number"
+            placeholder="5000"
+            className="input"
+            {...register("budget", { valueAsNumber: true })}
+          />
+          {errors.budget && (
+            <p className="input-error">{errors.budget.message}</p>
+          )}
+        </div>
       </div>
 
-      <div>
-        <textarea
-          placeholder="Job Description"
-          className="w-full border p-4 rounded-xl h-40"
-          {...register("description")}
-        />
-        {errors.description && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.description.message}
-          </p>
-        )}
+      <div className="form-actions">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="btn btn-primary disabled:opacity-50"
+        >
+          {isSubmitting ? "Saving..." : buttonText}
+        </button>
       </div>
-
-      <div>
-        <input
-          type="number"
-          placeholder="Budget"
-          className="w-full border p-4 rounded-xl"
-          {...register("budget", { valueAsNumber: true })}
-        />
-        {errors.budget && (
-          <p className="text-red-500 text-sm mt-1">{errors.budget.message}</p>
-        )}
-      </div>
-
-      <button
-        disabled={isSubmitting}
-        className="bg-blue-600 text-white px-6 py-4 rounded-xl disabled:opacity-50"
-      >
-        {isSubmitting ? "Saving..." : buttonText}
-      </button>
     </form>
   )
 }

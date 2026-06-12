@@ -40,67 +40,88 @@ export default async function JobPage({
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-4xl font-bold">{job.title}</h1>
+    <div className="max-w-3xl mx-auto">
+      <div className="card job-detail-card">
+        <p className="eyebrow mb-2">Job posting</p>
+        <h1 className="page-title text-2xl sm:text-3xl">{job.title}</h1>
 
-      <p className="mt-4">{job.description}</p>
+        <div className="job-meta">
+          <span className="badge badge-budget">
+            {job.budget.toLocaleString()} ETB
+          </span>
+          <span className="badge badge-neutral">
+            {job.client.name}
+          </span>
+        </div>
 
-      <p className="mt-4">Budget: ${job.budget}</p>
+        <div className="mt-8 pt-6 border-t border-[var(--card-border)]">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted mb-3">
+            Description
+          </h2>
+          <p className="text-[0.9375rem] leading-relaxed whitespace-pre-wrap">
+            {job.description}
+          </p>
+        </div>
 
-      <p className="mt-4 text-gray-600">Posted by: {job.client.name}</p>
+        {isOwner && <JobOwnerActions jobId={job.id} />}
+      </div>
 
-      {/* Owner: edit + delete */}
-      {isOwner && <JobOwnerActions jobId={job.id} />}
-
-      {/* Guest: prompt to log in */}
       {!user && (
-        <p className="mt-8">
-          <Link href="/login" className="text-blue-600 hover:underline">
-            Log in
+        <div className="alert-info mt-6">
+          <Link href="/login" className="link-accent">
+            Sign in
           </Link>{" "}
-          to apply for this job.
-        </p>
+          to apply for this position.
+        </div>
       )}
 
-      {/* Freelancer: apply or already applied */}
       {isFreelancer && !alreadyApplied && <ApplyJobForm jobId={job.id} />}
 
       {isFreelancer && alreadyApplied && (
-        <p className="mt-8 text-green-700 font-medium">
-          You have already applied to this job.
-        </p>
+        <div className="alert-success mt-6">
+          You have already submitted an application for this job.
+        </div>
       )}
 
-      {/* Client viewing someone else's job */}
       {isClient && !isOwner && (
-        <p className="mt-8 text-gray-500">
-          Only freelancers can apply to jobs.
-        </p>
+        <div className="alert-warning mt-6">
+          Only freelancers can apply to job postings.
+        </div>
       )}
 
-      {/* Owner: applicant list */}
       {isOwner && applications && (
         <section className="mt-10">
-          <h2 className="text-2xl font-semibold mb-4">
+          <h2 className="section-title">
             Applications ({applications.length})
           </h2>
 
           {applications.length === 0 ? (
-            <p className="text-gray-500">No applications yet.</p>
+            <div className="empty-state">
+              <p className="empty-state-title">No applications received</p>
+              <p className="text-muted text-sm">Applicants will appear here once they apply.</p>
+            </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {applications.map((application) => (
-                <div key={application.id} className="border rounded-lg p-4">
-                  <p className="font-semibold">
-                    {application.freelancer.name}
+                <div key={application.id} className="application-card">
+                  <div className="application-header">
+                    <div className="avatar">
+                      {application.freelancer.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm">
+                        {application.freelancer.name}
+                      </p>
+                      <p className="text-sm text-muted">
+                        {application.freelancer.email}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm leading-relaxed text-[var(--foreground)]">
+                    {application.coverLetter}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    {application.freelancer.email}
-                  </p>
-                  <p className="mt-2">{application.coverLetter}</p>
-                  <p className="text-xs text-gray-400 mt-2">
-                    Applied:{" "}
-                    {new Date(application.createdAt).toLocaleDateString()}
+                  <p className="text-xs text-muted mt-3">
+                    Submitted {new Date(application.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               ))}

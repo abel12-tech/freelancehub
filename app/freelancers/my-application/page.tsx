@@ -45,38 +45,64 @@ export default function MyApplicationsPage() {
   }, [session])
 
   if (isPending || loading) {
-    return <div className="p-6">Loading...</div>
+    return (
+      <div className="max-w-3xl mx-auto space-y-4">
+        <div className="skeleton h-8 w-48 rounded-md" />
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="card p-5">
+            <div className="skeleton h-5 w-2/3 rounded mb-3" />
+            <div className="skeleton h-4 w-1/3 rounded" />
+          </div>
+        ))}
+      </div>
+    )
   }
 
   if (session?.user?.role !== "FREELANCER") {
     return (
-      <div className="p-6 text-red-500">
-        Only freelancers can view applications
+      <div className="max-w-3xl mx-auto">
+        <div className="alert-error">
+          Only freelancers can view applications.
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        My Applications
-      </h1>
+    <div className="max-w-3xl mx-auto">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">My applications</h1>
+          <p className="page-subtitle">
+            Track all positions you have applied to.
+          </p>
+        </div>
+      </div>
 
       {applications.length === 0 ? (
-        <p>No applications found</p>
+        <div className="empty-state">
+          <p className="empty-state-title">No applications yet</p>
+          <p className="text-muted text-sm">Browse open jobs and submit your first application.</p>
+        </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {applications.map((app) => (
-            <div key={app.id} className="border p-4 rounded">
-              <h2 className="font-semibold">
+            <div key={app.id} className="card p-5">
+              <h2 className="text-base font-semibold">
                 {app.job.title}
               </h2>
 
-              <p>Budget: ${app.job.budget}</p>
-              <p>Status: {app.status}</p>
+              <div className="flex flex-wrap items-center gap-2 mt-3">
+                <span className="badge badge-budget">
+                  {app.job.budget.toLocaleString()} ETB
+                </span>
+                <span className="badge badge-neutral">
+                  {app.status}
+                </span>
+              </div>
 
-              <p className="text-sm text-gray-500">
-                {new Date(app.createdAt).toLocaleDateString()}
+              <p className="text-sm text-muted mt-3">
+                Applied {new Date(app.createdAt).toLocaleDateString()}
               </p>
             </div>
           ))}

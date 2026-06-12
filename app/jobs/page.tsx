@@ -14,16 +14,28 @@ export default async function JobsPage() {
 
   return (
     <div className="container">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
-        <h1 className="text-4xl font-bold">Available Jobs</h1>
-        <CreateJobLink />
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Available Jobs</h1>
+          <p className="page-subtitle">
+            {jobs.length > 0
+              ? `${jobs.length} open position${jobs.length === 1 ? "" : "s"} on the platform`
+              : "New opportunities are added regularly"}
+          </p>
+        </div>
+        <div className="page-header-actions">
+          <CreateJobLink />
+        </div>
       </div>
 
       {jobs.length === 0 ? (
-        <p className="text-gray-500">No jobs posted yet.</p>
+        <div className="empty-state">
+          <p className="empty-state-title">No jobs posted yet</p>
+          <p className="text-muted text-sm">Be the first to post a job or check back later.</p>
+        </div>
       ) : (
-        <div className="grid gap-4">
-          {jobs.map((job:any) => (
+        <div className="space-y-3">
+          {jobs.map((job: any) => (
             <JobCard
               key={job.id}
               id={String(job.id)}

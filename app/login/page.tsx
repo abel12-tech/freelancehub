@@ -50,40 +50,43 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-10 bg-gray-50">
+    <div className="form-page">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md space-y-5 bg-white p-8 rounded-2xl shadow"
+        className="form-card space-y-5"
       >
-        <div>
-          <h1 className="text-4xl font-bold">Welcome Back</h1>
-
-          <p className="text-gray-500 mt-2">
-            Login to your FreelanceHub account
+        <div className="form-header">
+          <h1 className="page-title text-2xl">Welcome back</h1>
+          <p className="page-subtitle mx-auto">
+            Sign in to your FreelanceHub account
           </p>
         </div>
 
         <div>
+          <label htmlFor="email" className="form-label">Email address</label>
           <input
+            id="email"
             type="email"
-            placeholder="Email"
-            className="w-full border p-4 rounded-xl"
+            placeholder="you@example.com"
+            className="input"
             {...register("email")}
           />
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            <p className="input-error">{errors.email.message}</p>
           )}
         </div>
 
         <div>
+          <label htmlFor="password" className="form-label">Password</label>
           <input
+            id="password"
             type="password"
-            placeholder="Password"
-            className="w-full border p-4 rounded-xl"
+            placeholder="Enter your password"
+            className="input"
             {...register("password")}
           />
           {errors.password && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="input-error">
               {errors.password.message}
             </p>
           )}
@@ -92,15 +95,15 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-blue-600 text-white p-4 rounded-xl disabled:opacity-50"
+          className="btn btn-primary w-full disabled:opacity-50"
         >
-          {isSubmitting ? "Logging in..." : "Login"}
+          {isSubmitting ? "Signing in..." : "Sign in"}
         </button>
 
-        <p className="text-center text-gray-500 text-sm">
+        <p className="text-center text-muted text-sm pt-1">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-blue-600 hover:underline">
-            Register
+          <Link href="/register" className="link-accent">
+            Create account
           </Link>
         </p>
       </form>

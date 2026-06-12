@@ -48,79 +48,87 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-10 bg-gray-50">
+    <div className="form-page">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md space-y-5 bg-white p-8 rounded-2xl shadow"
+        className="form-card space-y-5"
       >
-        <div>
-          <h1 className="text-4xl font-bold">Create Account</h1>
-          <p className="text-gray-500 mt-2">Join FreelanceHub today</p>
+        <div className="form-header">
+          <h1 className="page-title text-2xl">Create account</h1>
+          <p className="page-subtitle mx-auto">Join FreelanceHub today</p>
         </div>
 
         <div>
+          <label htmlFor="name" className="form-label">Full name</label>
           <input
+            id="name"
             type="text"
-            placeholder="Full Name"
-            className="w-full border p-4 rounded-xl"
+            placeholder="John Doe"
+            className="input"
             {...register("name")}
           />
           {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            <p className="input-error">{errors.name.message}</p>
           )}
         </div>
 
         <div>
+          <label htmlFor="email" className="form-label">Email address</label>
           <input
+            id="email"
             type="email"
-            placeholder="Email"
-            className="w-full border p-4 rounded-xl"
+            placeholder="you@example.com"
+            className="input"
             {...register("email")}
           />
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            <p className="input-error">{errors.email.message}</p>
           )}
         </div>
 
         <div>
+          <label htmlFor="password" className="form-label">Password</label>
           <input
+            id="password"
             type="password"
-            placeholder="Password"
-            className="w-full border p-4 rounded-xl"
+            placeholder="Minimum 8 characters"
+            className="input"
             {...register("password")}
           />
           {errors.password && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="input-error">
               {errors.password.message}
             </p>
           )}
         </div>
 
         <div>
+          <label htmlFor="role" className="form-label">Account type</label>
           <select
-            className="w-full border p-4 rounded-xl"
+            id="role"
+            className="input"
             {...register("role")}
           >
-            <option value="FREELANCER">Freelancer</option>
-            <option value="CLIENT">Client</option>
+            <option value="FREELANCER">Freelancer — I want to find work</option>
+            <option value="CLIENT">Client — I want to hire talent</option>
           </select>
           {errors.role && (
-            <p className="text-red-500 text-sm mt-1">{errors.role.message}</p>
+            <p className="input-error">{errors.role.message}</p>
           )}
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-blue-600 text-white p-4 rounded-xl disabled:opacity-50"
+          className="btn btn-primary w-full disabled:opacity-50"
         >
-          {isSubmitting ? "Creating Account..." : "Register"}
+          {isSubmitting ? "Creating account..." : "Create account"}
         </button>
 
-        <p className="text-center text-gray-500 text-sm">
+        <p className="text-center text-muted text-sm pt-1">
           Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">
-            Login
+          <Link href="/login" className="link-accent">
+            Sign in
           </Link>
         </p>
       </form>

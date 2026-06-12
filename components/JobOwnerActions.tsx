@@ -39,21 +39,21 @@ export default function JobOwnerActions({ jobId }: JobOwnerActionsProps) {
   }
 
   return (
-    <div className="mt-8 flex gap-3">
+    <div className="actions-row mt-8 pt-6 border-t border-[var(--card-border)]">
       <Link
         href={`/jobs/${jobId}/edit`}
-        className="bg-yellow-500 text-white px-4 py-2 rounded"
+        className="btn btn-warning"
       >
-        Edit Job
+        Edit job
       </Link>
 
       <button
         type="button"
         onClick={handleDelete}
         disabled={deleting}
-        className="bg-red-600 text-white px-4 py-2 rounded disabled:opacity-50"
+        className="btn btn-danger disabled:opacity-50"
       >
-        {deleting ? "Deleting..." : "Delete Job"}
+        {deleting ? "Deleting..." : "Delete job"}
       </button>
     </div>
   )

@@ -26,8 +26,15 @@ export default async function EditPage({
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-4xl font-bold mb-6">Edit Job</h1>
+    <div className="max-w-3xl mx-auto">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Edit job</h1>
+          <p className="page-subtitle">
+            Update your job listing details below.
+          </p>
+        </div>
+      </div>
 
       <EditJobForm
         jobId={jobId}

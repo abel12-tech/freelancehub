@@ -46,14 +46,26 @@ export default function CreateJobPage() {
   }
 
   if (isPending || !session?.user || session.user.role !== "CLIENT") {
-    return null
+    return (
+      <div className="max-w-3xl mx-auto py-20">
+        <div className="skeleton h-8 w-48 rounded-md mb-4" />
+        <div className="skeleton h-64 w-full rounded-lg" />
+      </div>
+    )
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-4xl font-bold mb-6">Create Job</h1>
+    <div className="max-w-3xl mx-auto">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Post a job</h1>
+          <p className="page-subtitle">
+            Create a new listing and connect with qualified freelancers.
+          </p>
+        </div>
+      </div>
 
-      <JobForm buttonText="Create Job" onSubmit={createJob} />
+      <JobForm buttonText="Publish job" onSubmit={createJob} />
     </div>
   )
 }

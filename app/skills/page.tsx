@@ -6,7 +6,14 @@ export default async function SkillsPage() {
     const users: UserCardProps[] = await res.json();
     return (
         <div className="container">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">Popular Skills</h1>
+            <div className="page-header">
+                <div>
+                    <h1 className="page-title">Popular Skills</h1>
+                    <p className="page-subtitle">
+                        Explore professionals across industries and specialties.
+                    </p>
+                </div>
+            </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {users.map(user => (
                     <UserCard key={user.id} {...user} />

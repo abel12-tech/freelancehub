@@ -29,12 +29,12 @@ export default function CreateJobLink() {
     return () => window?.removeEventListener("better-auth:session-updated", handler)
   }, [])
 
-  if (loading) return null
+  if (loading) return <div className="skeleton h-10 w-32 rounded-md" />
   if (!session?.user || session.user.role !== "CLIENT") return null
 
   return (
-    <Link href="/jobs/create" className="bg-blue-600 text-white px-4 py-2 rounded">
-      Create Job
+    <Link href="/jobs/create" className="btn btn-primary">
+      Post a job
     </Link>
   )
 }

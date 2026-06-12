@@ -28,31 +28,31 @@ export default function JobCard({
   const applyUrl = user ? jobUrl : `/login?next=${encodeURIComponent(jobUrl)}`;
 
   return (
-    <article className="card p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-1">{title}</h3>
-          <p className="text-sm text-muted">{company}</p>
+    <article className="card card-hover p-5">
+      <div className="job-card-inner">
+        <div className="job-card-content">
+          <h3 className="text-base font-semibold tracking-tight text-[var(--foreground)] truncate">
+            {title}
+          </h3>
+          <p className="text-sm text-muted mt-0.5">{company}</p>
         </div>
 
-        <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
-          <div className="inline-flex items-center whitespace-nowrap rounded-full bg-sky-100 text-sky-800 text-sm font-medium px-3 py-1 min-w-22">
-            {budget} ETB
-          </div>
-          <Link href={jobUrl} className="text-sky-600 hover:underline text-sm">
-            View
+        <div className="job-card-aside">
+          <span className="badge badge-budget">
+            {budget.toLocaleString()} ETB
+          </span>
+          <Link href={jobUrl} className="link-accent">
+            View details
           </Link>
         </div>
       </div>
 
       {!isClient && (
-        <div className="mt-5 flex justify-end">
+        <div className="card-footer">
           {isFreelancer && applied ? (
-            <span className="inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 px-4 py-2 text-sm font-semibold">
-              You have applied
-            </span>
+            <span className="badge badge-applied">Application submitted</span>
           ) : (
-            <Link href={applyUrl} className="btn btn-primary px-5 py-3 text-sm font-semibold">
+            <Link href={applyUrl} className="btn btn-primary">
               Apply Now
             </Link>
           )}

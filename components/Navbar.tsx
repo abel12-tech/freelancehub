@@ -8,57 +8,57 @@ export default function Navbar() {
   const user = session?.user;
 
   return (
-    <nav className=" from-white to-white/60 border-b shadow-sm">
-      <div className="container flex items-center justify-between h-16">
-        <div className="flex items-center gap-4">
-          <Link href="/" className="text-2xl font-extrabold text-sky-600">
+    <nav className="nav-glass">
+      <div className="container nav-inner">
+        <div className="flex items-center gap-6 min-w-0">
+          <Link href="/" className="logo-text shrink-0">
             FreelanceHub
           </Link>
-          <p className="hidden sm:block text-sm text-muted">
+          <p className="hidden lg:block text-sm text-muted truncate">
             Connect with top freelancers
           </p>
         </div>
 
-        <div className="hidden md:flex items-center gap-6">
-          <Link href="/skills" className="text-gray-700 hover:text-sky-600">
+        <div className="nav-links">
+          <Link href="/skills" className="nav-link">
             Skills
           </Link>
-          <Link href="/jobs" className="text-gray-700 hover:text-sky-600">
+          <Link href="/jobs" className="nav-link">
             Jobs
           </Link>
           {user?.role === "CLIENT" && (
-            <Link
-              href="/jobs/create"
-              className="text-gray-700 hover:text-sky-600"
-            >
+            <Link href="/jobs/create" className="nav-link">
               Post a Job
             </Link>
           )}
         </div>
 
-        <div>
-          {isPending ? null : user ? (
-            <div className="flex items-center gap-3">
-              <span className="text-gray-800 font-medium">
+        <div className="shrink-0">
+          {isPending ? (
+            <div className="h-10 w-24 skeleton rounded-md" />
+          ) : user ? (
+            <div className="user-pill">
+              <span className="user-name">
                 {user.name}
-                <span className="text-xs text-gray-400 ml-2">
-                  ({user.role})
-                </span>
+                <span className="badge-role">{user.role}</span>
               </span>
+              <div className="avatar" title={user.name}>
+                {user.name.charAt(0).toUpperCase()}
+              </div>
               <button
                 type="button"
                 onClick={() => authClient.signOut()}
-                className="btn btn-ghost"
+                className="btn btn-ghost text-xs min-h-9 px-3"
               >
                 Sign out
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="auth-actions">
               <Link href="/login" className="btn btn-primary">
                 Log in
               </Link>
-              <Link href="/register" className="btn btn-ghost">
+              <Link href="/register" className="btn btn-ghost hidden sm:inline-flex">
                 Register
               </Link>
             </div>

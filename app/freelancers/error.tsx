@@ -8,21 +8,25 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="max-w-5xl mx-auto py-20 text-center">
-      <h1 className="text-3xl font-bold text-red-500">
-        Failed to load freelancers
-      </h1>
+    <div className="max-w-3xl mx-auto py-16 text-center">
+      <div className="empty-state">
+        <p className="empty-state-title text-[var(--danger)]">
+          Failed to load freelancers
+        </p>
 
-      <p className="mt-3 text-gray-600">
-        {error.message}
-      </p>
+        <p className="text-muted text-sm mt-2">
+          {error.message}
+        </p>
 
-      <button
-        onClick={() => reset()}
-        className="mt-6 px-5 py-2 bg-black text-white rounded-lg"
-      >
-        Try Again
-      </button>
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={() => reset()}
+            className="btn btn-primary"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
